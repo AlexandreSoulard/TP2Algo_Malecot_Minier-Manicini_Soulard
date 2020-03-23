@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "a234.h"
+#include "file.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
 
@@ -51,7 +52,7 @@ int CleMax (Arbre234 a)
     int n = CleMax(a->fils[i]);
     if(n > max){
       max = n;
-    }
+    }pnoeud_t
   }
   return max;
 }
@@ -132,20 +133,45 @@ Arbre234 noeud_max (Arbre234 a)
   if(a == NULL){
     return NULL;
   }
-
   
   return NULL;
+
 }
 
 
 void Afficher_Cles_Largeur (Arbre234 a)
 {
-  /*
-    Afficher le cles de l'arbre a avec
-    un parcours en largeur
-  */
-
-  return ;
+	if (a == NULL) return;	//Cas de base, arbre vide
+	pfile_t file = creer_file();	//Création d'une pile
+	enfiler(file, a);				//Enfilement de la racine
+	while (!file_vide(file)) {		//Parcours en largeur classique
+		a = defiler(file);			//Défilement du noeud
+		int nbrFils;
+		switch (a->t) {				//Evaluation du type du noeud
+		case 0:
+			nbrFils = 0;
+			break;
+		case 2:
+			nbrFils = 2;
+			break;
+		case 3:
+			nbrFils = 3;
+			break;
+		case 4:
+			nbrFils = 4;
+			break;
+		default:
+			printf("Error, unknown statement\n");
+			break;
+		}
+		for (int i = 0; i < nbrFils; i++) {
+			enfiler(file, a->fils[i]); 	//Puis enfilement de ses fils
+		}
+		for (int i = 0; i < nbrFils-1; i++) {
+			printf("%i ", a->cles[i]);	//Affichage des clés
+		}
+	} 
+	printf("\n");
 }
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
