@@ -11,7 +11,7 @@
 int hauteur (Arbre234 a)
 {
   int h0, h1, h2, h3 ;
-  
+
   if (a == NULL)
     return 0 ;
 
@@ -24,7 +24,7 @@ int hauteur (Arbre234 a)
   h3 = hauteur (a->fils [3]) ;
 
   return 1 + max (max (h0,h1),max (h2,h3)) ;
-} 
+}
 
 int NombreCles (Arbre234 a)
 {
@@ -52,7 +52,7 @@ int CleMax (Arbre234 a)
     int n = CleMax(a->fils[i]);
     if(n > max){
       max = n;
-    }pnoeud_t
+    }
   }
   return max;
 }
@@ -93,7 +93,7 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
   for(int i = 0; i<a->t; i++){
     RechercherCle(a->fils[i], cle);
   }
-  return;
+  return NULL;
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
@@ -133,7 +133,7 @@ Arbre234 noeud_max (Arbre234 a)
   if(a == NULL){
     return NULL;
   }
-  
+
   return NULL;
 
 }
@@ -144,8 +144,10 @@ void Afficher_Cles_Largeur (Arbre234 a)
 	if (a == NULL) return;	//Cas de base, arbre vide
 	pfile_t file = creer_file();	//Création d'une pile
 	enfiler(file, a);				//Enfilement de la racine
+  printf("Création de la file initiale\n");
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
+    printf("Noeud dépilé\n");
 		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
@@ -170,46 +172,35 @@ void Afficher_Cles_Largeur (Arbre234 a)
 		for (int i = 0; i < nbrFils-1; i++) {
 			printf("%i ", a->cles[i]);	//Affichage des clés
 		}
-	} 
+	}
 	printf("\n");
 }
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
 {
-  /*int nbfils = 0;
-  for(int i = 0; i<a->t; i++){
-    if(a->fils[i] != NULL){
-      nbfils++;
-    }
-  }
-  if(nbfils = 0){
-    break;
-  }
-
-  int max = a->cles[0];
-  for(int i = 0; i<a->t-1; i++){
-    if(a->cles[i] > max){
-      max = a->cles[i];
-    }
-  }*/
   if(a == NULL){
-    printf("\n");
-    return;
-  }
-  /*for(int i = 0; i<a->t-1; i++){
-    if(nbfils == 0){
-     printf("%i ", max);
+      return;
     }
-  }*/
-  for(int i = 0; i<a->t; i++){
-    Affichage_Cles_Triees_Recursive(a->fils[i]);
-    printf("%i", a->cles[i]);
-  } 
+    if(a->t == 0){
+      printf("\n");
+      return;
+    }
+    /*for(int i = 0; i<a->t-1; i++){
+      if(nbfils == 0){
+       printf("%i ", max);
+      }
+    }*/
+    for(int i = 0; i<a->t; i++){
+      Affichage_Cles_Triees_Recursive(a->fils[i]);
+      if(i != a->t-1){
+        printf("%i", a->cles[i]);
+      }
+    }
 }
 
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 {
-    /* 
+    /*
      Afficher les cles en ordre croissant
      Cette fonction ne sera pas recursive
      Utiliser une pile
@@ -228,8 +219,6 @@ void Detruire_Cle (Arbre234 *a, int cle)
 }
 
 
-
-
 int main (int argc, char **argv)
 {
   Arbre234 a ;
@@ -243,8 +232,28 @@ int main (int argc, char **argv)
   a = lire_arbre (argv [1]);
 
   printf ("==== Afficher arbre ====\n") ;
-  
-  afficher_arbre (a, 0);
-  Affichage_Cles_Triees_Recursive(a);
 
+  afficher_arbre (a, 0);
+  int h = hauteur(a);
+  printf("La hauteur de l'arbre est de :%i\n", h);
+  int nb = NombreCles(a);
+  printf("Le nombre de clés est de :%i\n", nb);
+  int cle_max = CleMax(a);
+  printf("La clé max est :%i\n", cle_max);
+  int cle_min = CleMin(a);
+  printf("La clé min est :%i\n", cle_min);
+  Arbre234 b = RechercherCle(a,50);
+  afficher_arbre(b,0);
+  Afficher_Cles_Largeur(a);
+/*  int* feuille;
+  int *noeud2;
+  int *noeud3;
+  int *noeud4;
+  //AnalyseStructureArbre(a, feuille, noeud2, noeud3, noeud4);
+  //Affichage_Cles_Triees_Recursive(a);
+  printf("%i\n", *feuille);
+  printf("%i\n", *noeud2);
+  printf("%i\n", *noeud3);
+  printf("%i\n", *noeud4);
+*/
 }
