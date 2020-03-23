@@ -27,11 +27,10 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  int somme = 0;
   if(a == NULL){
     return 0;
   }
-  return somme + a->int - 1 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]) + NombreCles(a->fils[4]);
+  return a->t-1 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]) + NombreCles(a->fils[4]);
 }
 
 int CleMax (Arbre234 a)
@@ -41,14 +40,14 @@ int CleMax (Arbre234 a)
   }
   int max = a->cles[0];
   if(a->fils[0] == NULL){
-    for(int i = 0; i<a->t; i++){
+    for(int i = 0; i<a->t-1; i++){
       if(a->cles[i] > max){
         max = a->cles[i];
       }
     }
     return max;
   }
-  for(int i = 0; i<a->fils.length; i++){
+  for(int i = 0; i<a->t; i++){
     int n = CleMax(a->fils[i]);
     if(n > max){
       max = n;
@@ -71,7 +70,7 @@ int CleMin (Arbre234 a)
     }
     return min;
   }
-  for(int i = 0; i<a->fils.length; i++){
+  for(int i = 0; i<a->t-1; i++){
     int n = CleMin(a->fils[i]);
     if(n < min){
       min = n;
@@ -90,9 +89,10 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
       return a;
     }
   }
-  for(int i = 0; i<a->fils.length; i++){
-    return RechercherCle(a->fils[i]);
+  for(int i = 0; i<a->t; i++){
+    RechercherCle(a->fils[i], cle);
   }
+  return;
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
@@ -110,7 +110,7 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
     *noeud4++;
   }
   int nbfils = 0;
-  for(int i = 0; i<a->fils.length; i++){
+  for(int i = 0; i<a->t-1; i++){
     if(a->fils[i] == NULL){
       nbfils++;
     }
@@ -118,7 +118,7 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
   if(nbfils == 0){
     *feuilles++;
   }
-  for(int i = 0; i<a->fils.length;i++){
+  for(int i = 0; i<a->t-1;i++){
     AnalyseStructureArbre(a->fils[i], feuilles, noeud2, noeud3, noeud4);
   }
 }
@@ -134,7 +134,7 @@ Arbre234 noeud_max (Arbre234 a)
   }
 
   
-  return NULL ;
+  return NULL;
 }
 
 
@@ -150,11 +150,35 @@ void Afficher_Cles_Largeur (Arbre234 a)
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
 {
-  /* 
-     Afficher les cles en ordre croissant
-     Cette fonction sera recursive
-  */
-     
+  /*int nbfils = 0;
+  for(int i = 0; i<a->t; i++){
+    if(a->fils[i] != NULL){
+      nbfils++;
+    }
+  }
+  if(nbfils = 0){
+    break;
+  }
+
+  int max = a->cles[0];
+  for(int i = 0; i<a->t-1; i++){
+    if(a->cles[i] > max){
+      max = a->cles[i];
+    }
+  }*/
+  if(a == NULL){
+    printf("\n");
+    return;
+  }
+  /*for(int i = 0; i<a->t-1; i++){
+    if(nbfils == 0){
+     printf("%i ", max);
+    }
+  }*/
+  for(int i = 0; i<a->t; i++){
+    Affichage_Cles_Triees_Recursive(a->fils[i]);
+    printf("%i", a->cles[i]);
+  } 
 }
 
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
@@ -190,10 +214,11 @@ int main (int argc, char **argv)
       exit (-1) ;
     }
 
-  a = lire_arbre (argv [1]) ;
+  a = lire_arbre (argv [1]);
 
   printf ("==== Afficher arbre ====\n") ;
   
-  afficher_arbre (a, 0) ;
+  afficher_arbre (a, 0);
+  Affichage_Cles_Triees_Recursive(a);
 
 }
