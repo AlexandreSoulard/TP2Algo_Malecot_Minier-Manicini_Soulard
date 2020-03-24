@@ -92,18 +92,63 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-  if(a== NULL){
+/*  if(a== NULL || a->t==0){
     return NULL;
   }
-  for(int i =0; i<a->t; i++){
-    if(a->cles[i] == cle){
+
+  if (a->t == 2){
+    if (a->cles[1]==cle){
       return a;
+    } else {
+      Arbre234 res1 = RechercherCle(a->fils[1],cle);
+      Arbre234 res2 = RechercherCle(a->fils[2],cle);
+      if (res1!= NULL){
+        return res1;
+      } else if (res2!=NULL){
+        return res2;
+      } else {
+        return res1;
+      }
+    }
+  } else if (a->t==3){
+    if (a->cles[0]==cle || a->cles[1]==cle) {
+      return a;
+    } else {
+      Arbre234 res1 = RechercherCle(a->fils[0],cle);
+      Arbre234 res2 = RechercherCle(a->fils[1],cle);
+      Arbre234 res3 = RechercherCle(a->fils[2],cle);
+      if (res1!= NULL){
+        return res1;
+      } else if (res2!=NULL){
+        return res2;
+      } else if (res3!=NULL){
+        return res3;
+      } else {
+        return res1;
+      }
+    }
+  } else {
+    if (a->cles[0]==cle || a->cles[1]==cle || a->cles[2]==cle){
+      return a;
+    } else {
+      Arbre234 res1 = RechercherCle(a->fils[0],cle);
+      Arbre234 res2 = RechercherCle(a->fils[1],cle);
+      Arbre234 res3 = RechercherCle(a->fils[2],cle);
+      Arbre234 res4 = RechercherCle(a->fils[3],cle);
+      if (res1!= NULL){
+        return res1;
+      } else if (res2!=NULL){
+        return res2;
+      } else if (res3!=NULL){
+        return res3;
+      } else if (res4!=NULL){
+        return res4;
+      } else {
+        return res1;
+      }
     }
   }
-  for(int i = 0; i<a->t; i++){
-    RechercherCle(a->fils[i], cle);
-  }
-  return NULL;
+  */
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
