@@ -45,6 +45,7 @@ int CleMax (Arbre234 a)
   } else {
     max = a->cles[2];               //initilisation du max dans le cas d'un noeud4
   }
+
   Arbre234 b = a;
 
   while (b!=NULL && b->t!=0){       //on parcours les fils droits de l'arbre jusqu'à qu'il n'y ait plus
