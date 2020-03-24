@@ -36,22 +36,24 @@ int NombreCles (Arbre234 a)
 
 int CleMax (Arbre234 a)
 {
-  if(a == NULL){
-    return 0;
+  if(a == NULL || a->t == 0){       //Noeud0 ou pas de noeud renvoie aucun max
+    return -1;
   }
-  int max = a->cles[0];
-  if(a->fils[0] == NULL){
-    for(int i = 0; i<a->t-1; i++){
-      if(a->cles[i] > max){
-        max = a->cles[i];
-      }
-    }
-    return max;
+  int max = 0;
+  if (a->t==2 || a->t==3){          //initilisation du max dans les noeud2-3
+    max = a->cles[1];
+  } else {
+    max = a->cles[2];               //initilisation du max dans le cas d'un noeud4
   }
-  for(int i = 0; i<a->t; i++){
-    int n = CleMax(a->fils[i]);
-    if(n > max){
-      max = n;
+  Arbre234 b = a;
+
+  while (b!=NULL && b->t!=0){       //on parcours les fils droits de l'arbre jusqu'à qu'il n'y ait plus
+    if(b->t==2 || b->t==3){
+      max = b->cles[1];             //On garde la cles la plus à droite car c'est la plus grande.
+      b = b->fils[2];
+    } else {
+      max = b->cles[2];
+      b = b->fils[3];
     }
   }
   return max;
@@ -60,24 +62,32 @@ int CleMax (Arbre234 a)
 int CleMin (Arbre234 a)
 {
   if(a == NULL){
-    return 50000;
+    return -1;
   }
-  int min = a->cles[0];
-  if(a->fils[0] == NULL){
-    for(int i = 0; i<a->t; i++){
-      if(a->cles[i] < min){
-        min = a->cles[i];
-      }
-    }
-    return min;
+  int min = 0;
+  if (a->t==2){                     //initialisation du max dans les noeud2
+    min = a->cles[1];
+  } else if (a->t==3) {             //initilisation du max dans les noeud3
+    min = a->cles[0];
+  } else {
+    min = a->cles[0];               //initilisation du max dans le cas d'un noeud4
   }
-  for(int i = 0; i<a->t-1; i++){
-    int n = CleMin(a->fils[i]);
-    if(n < min){
-      min = n;
+
+  Arbre234 b = a;
+  while (b!=NULL && b->t!=0){       //on parcours les fils gauches de l'arbre jusqu'à qu'il n'y ait plus
+    if(b->t==2){
+      min = b->cles[1];
+      b = b->fils[1];
+    } else if(b->t==3) {
+      min = b->cles[0];             //On garde la cles la plus à gauche car c'est la plus petite.
+      b = b->fils[0];
+    } else {
+      min = b->cles[0];
+      b = b->fils[0];
     }
   }
   return min;
+
 }
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
@@ -265,15 +275,17 @@ int main (int argc, char **argv)
   } else {
     afficher_arbre(b,0);
   }
+  Affichage_Cles_Triees_Recursive(a);
   //Afficher_Cles_Largeur(a);
-  int* feuille = 0;
-  int* noeud2 = 0;
-  int* noeud3 = 0;
-  int* noeud4 = 0;
+/*  int* feuille;
+  int *noeud2;
+  int *noeud3;
+  int *noeud4;
   AnalyseStructureArbre(a, feuille, noeud2, noeud3, noeud4);
   Affichage_Cles_Triees_Recursive(a);
   printf("%i\n", *feuille);
   printf("%i\n", *noeud2);
   printf("%i\n", *noeud3);
-  printf("%i\n", *noeud4);
+  //printf("%i\n", *noeud4);
+  */
 }
