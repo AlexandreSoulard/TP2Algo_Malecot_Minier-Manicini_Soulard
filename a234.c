@@ -188,24 +188,40 @@ void Afficher_Cles_Largeur (Arbre234 a)
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
 {
+  /*int nbfils = 0;
+  for(int i = 0; i<a->t; i++){
+    if(a->fils[i] != NULL){
+      nbfils++;
+    }
+  }
+  if(nbfils = 0){
+    break;
+  }
+
+  int max = a->cles[0];
+  for(int i = 0; i<a->t-1; i++){
+    if(a->cles[i] > max){
+      max = a->cles[i];
+    }
+  }*/
   if(a == NULL){
-      return;
+    return;
+  }
+  if(a->t == 0){
+    printf("\n");
+    return;
+  }
+  /*for(int i = 0; i<a->t-1; i++){
+    if(nbfils == 0){
+     printf("%i ", max);
     }
-    if(a->t == 0){
-      printf("\n");
-      return;
+  }*/
+  for(int i = 0; i<a->t; i++){
+    Affichage_Cles_Triees_Recursive(a->fils[i]);
+    if(i != a->t-1){
+      printf("%i", a->cles[i]);
     }
-    /*for(int i = 0; i<a->t-1; i++){
-      if(nbfils == 0){
-       printf("%i ", max);
-      }
-    }*/
-    for(int i = 0; i<a->t; i++){
-      Affichage_Cles_Triees_Recursive(a->fils[i]);
-      if(i != a->t-1){
-        printf("%i", a->cles[i]);
-      }
-    }
+  }
 }
 
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
