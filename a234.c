@@ -52,7 +52,7 @@ int CleMax (Arbre234 a)
     int n = CleMax(a->fils[i]);
     if(n > max){
       max = n;
-    }pnoeud_t
+    }
   }
   return max;
 }
