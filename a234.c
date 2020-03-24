@@ -93,16 +93,34 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-  if(a== NULL){
+  if(a == NULL){
     return NULL;
   }
-  for(int i =0; i<a->t; i++){
-    if(a->cles[i] == cle){
+  if(a->t == 0){
+    return NULL;
+  }
+  if(a->t == 2){
+    if(a->cles[1] == cle){
       return a;
     }
+    Arbre234 res = RechercherCle(a->fils[1], cle);
+    Arbre234 res2 = RechercherCle(a->fils[2], cle);
+    if(res != NULL){
+      return res;
+    }
+    if(res2 != NULL){
+      return res2;
+    }
   }
-  for(int i = 0; i<a->t; i++){
-    return RechercherCle(a->fils[i], cle);
+  else{
+    for(int i =0; i<a->t; i++){
+      if(a->cles[i] == cle){
+        return a;
+      }
+    }
+    for(int i = 0; i<a->t; i++){
+      return RechercherCle(a->fils[i], cle);
+    }
   }
   return NULL;
 }
