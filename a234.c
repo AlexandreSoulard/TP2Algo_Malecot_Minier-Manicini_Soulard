@@ -191,36 +191,38 @@ void Afficher_Cles_Largeur (Arbre234 a)
 {
 	if (a == NULL) return;	//Cas de base, arbre vide
 	pfile_t file = creer_file();	//Création d'une pile
-	enfiler(file, a);				//Enfilement de la racine
-  printf("Création de la file initiale\n");
+	enfiler(file, a);				//Enfilement de la racine*
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
 		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
-			nbrFils = 0;
 			break;
 		case 2:
-			nbrFils = 2;
+			enfiler(file, a->fils[1]); 	
+			enfiler(file, a->fils[2]); 	
+			printf("%i\n", a->cles[1]);	
 			break;
 		case 3:
-			nbrFils = 3;
+			for (int i = 0; i < 3; i++) {
+				enfiler(file, a->fils[i]); 
+			}
+			printf("%i\n", a->cles[0]);	
+			printf("%i\n", a->cles[1]);	
 			break;
 		case 4:
-			nbrFils = 4;
+			for (int i = 0; i < 4; i++) {
+				enfiler(file, a->fils[i]); 
+			}
+			for (int i = 0; i < 3; i++) {
+				printf("%i\n", a->cles[i]);
+			}
 			break;
 		default:
 			printf("Error, unknown statement\n");
 			break;
 		}
-		for (int i = 0; i < nbrFils; i++) {
-			enfiler(file, a->fils[i]); 	//Puis enfilement de ses fils
-		}
-		for (int i = 0; i < nbrFils-1; i++) {
-			printf("%i ", a->cles[i]);	//Affichage des clés
-		}
 	}
-	printf("\n");
 }
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
@@ -300,8 +302,8 @@ int main (int argc, char **argv)
   }
   printf("\n=== Affichage des Clés triées dans l'ordre croissant ===");
   Affichage_Cles_Triees_Recursive(a);
-  //printf("=== Affichage des Clés en largeur ===\n");
-  //Afficher_Cles_Largeur(a);
+  printf("=== Affichage des Clés en largeur ===\n");
+  Afficher_Cles_Largeur(a);
   printf("=== Affichage du nombre de noeud2/noeud3/noeud4/feuille ===\n");
   int feuille = 0;
   int noeud2 = 0;
