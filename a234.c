@@ -28,7 +28,7 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  if(a == NULL){
+  if(a == NULL || a->t == 0 ){
     return 0;
   }
   return a->t-1 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]) + NombreCles(a->fils[4]);
@@ -259,17 +259,21 @@ int main (int argc, char **argv)
   int cle_min = CleMin(a);
   printf("La clé min est :%i\n", cle_min);
   Arbre234 b = RechercherCle(a,50);
-  afficher_arbre(b,0);
-  Afficher_Cles_Largeur(a);
-/*  int* feuille;
+  printf("=== Afficher sous-arbre dont la racine est la clé cherché ===\n");
+  if (b == NULL){
+    printf("Le noeud 50 n'est pas l'arbre\n");
+  } else {
+    afficher_arbre(b,0);
+  }
+  //Afficher_Cles_Largeur(a);
+  int* feuille;
   int *noeud2;
   int *noeud3;
   int *noeud4;
-  //AnalyseStructureArbre(a, feuille, noeud2, noeud3, noeud4);
+  AnalyseStructureArbre(a, feuille, noeud2, noeud3, noeud4);
   //Affichage_Cles_Triees_Recursive(a);
   printf("%i\n", *feuille);
   printf("%i\n", *noeud2);
   printf("%i\n", *noeud3);
   printf("%i\n", *noeud4);
-*/
 }
