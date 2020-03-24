@@ -195,7 +195,6 @@ void Afficher_Cles_Largeur (Arbre234 a)
   printf("Création de la file initiale\n");
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
-    printf("Noeud dépilé\n");
 		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
