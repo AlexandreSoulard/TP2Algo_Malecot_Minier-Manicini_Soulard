@@ -194,7 +194,6 @@ void Afficher_Cles_Largeur (Arbre234 a)
 	enfiler(file, a);				//Enfilement de la racine*
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
-		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
 			break;
