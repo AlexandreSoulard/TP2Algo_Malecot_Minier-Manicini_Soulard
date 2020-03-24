@@ -45,6 +45,7 @@ int CleMax (Arbre234 a)
   } else {
     max = a->cles[2];               //initilisation du max dans le cas d'un noeud4
   }
+
   Arbre234 b = a;
 
   while (b!=NULL && b->t!=0){       //on parcours les fils droits de l'arbre jusqu'à qu'il n'y ait plus
@@ -92,6 +93,37 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
+    if(a == NULL){
+        return NULL;
+      }
+      if(a->t == 0){
+        return NULL;
+      }
+      if(a->t == 2){
+        if(a->cles[1] == cle){
+          return a;
+        }
+        Arbre234 res = RechercherCle(a->fils[1], cle);
+        Arbre234 res2 = RechercherCle(a->fils[2], cle);
+        if(res != NULL){
+          return res;
+        }
+        if(res2 != NULL){
+          return res2;
+        }
+      }
+      else{
+        for(int i =0; i<a->t; i++){
+          if(a->cles[i] == cle){
+            return a;
+          }
+        }
+        for(int i = 0; i<a->t; i++){
+          return RechercherCle(a->fils[i], cle);
+        }
+      }
+      return NULL;
+
 /*  if(a== NULL || a->t==0){
     return NULL;
   }
@@ -147,8 +179,15 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
         return res1;
       }
     }
-  }
-  */
+    Arbre234 res = RechercherCle(a->fils[1], cle);
+    Arbre234 res2 = RechercherCle(a->fils[2], cle);
+    if(res != NULL){
+      return res;
+    }
+    if(res2 != NULL){
+      return res2;
+    }
+*/
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
@@ -156,26 +195,45 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
   if(a == NULL){
     return;
   }
+  if(a->t == 0){
+    return;
+  }
   if(a->t == 2){
-    *noeud2++;
+    *noeud2 = *noeud2 + 1;
   }
   else if(a->t == 3){
-    *noeud3++;
+    *noeud3 = *noeud3 + 1;
   }
-  else{
-    *noeud4++;
+  else if(a->t == 4){
+    *noeud4 = *noeud4 + 1;
   }
   int nbfils = 0;
-  for(int i = 0; i<a->t-1; i++){
-    if(a->fils[i] == NULL){
+  if(a->t == 2){
+    if(a->fils[1]->t != 0){
+      nbfils++;
+    }
+    if(a->fils[2]->t != 0){
       nbfils++;
     }
   }
-  if(nbfils == 0){
-    *feuilles++;
+  else{
+    for(int i = 0; i<a->t-1; i++){
+      if(a->fils[i]->t != 0){
+        nbfils++;
+      }
+    }
   }
-  for(int i = 0; i<a->t-1;i++){
-    AnalyseStructureArbre(a->fils[i], feuilles, noeud2, noeud3, noeud4);
+  if(nbfils == 0){
+    *feuilles = *feuilles + 1;
+  }
+  if(a->t == 2){
+    AnalyseStructureArbre(a->fils[1], feuilles, noeud2, noeud3, noeud4);
+    AnalyseStructureArbre(a->fils[2], feuilles, noeud2, noeud3, noeud4);
+  }
+  else{
+    for(int i = 0; i<a->t;i++){
+      AnalyseStructureArbre(a->fils[i], feuilles, noeud2, noeud3, noeud4);
+    }
   }
 }
 
@@ -198,57 +256,42 @@ void Afficher_Cles_Largeur (Arbre234 a)
 {
 	if (a == NULL) return;	//Cas de base, arbre vide
 	pfile_t file = creer_file();	//Création d'une pile
-	enfiler(file, a);				//Enfilement de la racine
-  printf("Création de la file initiale\n");
+	enfiler(file, a);				//Enfilement de la racine*
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
-    printf("Noeud dépilé\n");
 		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
-			nbrFils = 0;
 			break;
 		case 2:
-			nbrFils = 2;
+			enfiler(file, a->fils[1]);
+			enfiler(file, a->fils[2]);
+			printf("%i\n", a->cles[1]);
 			break;
 		case 3:
-			nbrFils = 3;
+			for (int i = 0; i < 3; i++) {
+				enfiler(file, a->fils[i]);
+			}
+			printf("%i\n", a->cles[0]);
+			printf("%i\n", a->cles[1]);
 			break;
 		case 4:
-			nbrFils = 4;
+			for (int i = 0; i < 4; i++) {
+				enfiler(file, a->fils[i]);
+			}
+			for (int i = 0; i < 3; i++) {
+				printf("%i\n", a->cles[i]);
+			}
 			break;
 		default:
 			printf("Error, unknown statement\n");
 			break;
 		}
-		for (int i = 0; i < nbrFils; i++) {
-			enfiler(file, a->fils[i]); 	//Puis enfilement de ses fils
-		}
-		for (int i = 0; i < nbrFils-1; i++) {
-			printf("%i ", a->cles[i]);	//Affichage des clés
-		}
 	}
-	printf("\n");
 }
 
 void Affichage_Cles_Triees_Recursive (Arbre234 a)
 {
-  /*int nbfils = 0;
-  for(int i = 0; i<a->t; i++){
-    if(a->fils[i] != NULL){
-      nbfils++;
-    }
-  }
-  if(nbfils = 0){
-    break;
-  }
-
-  int max = a->cles[0];
-  for(int i = 0; i<a->t-1; i++){
-    if(a->cles[i] > max){
-      max = a->cles[i];
-    }
-  }*/
   if(a == NULL){
     return;
   }
@@ -256,11 +299,13 @@ void Affichage_Cles_Triees_Recursive (Arbre234 a)
     printf("\n");
     return;
   }
-  /*for(int i = 0; i<a->t-1; i++){
-    if(nbfils == 0){
-     printf("%i ", max);
-    }
-  }*/
+  if(a->t == 2){//Pour a->t = 2 on a le cas spécial où seulement a->fils[1] et a->fils[2] sont remplis
+    //et ce n'est pas a->fils[0] qui est rempli, donc on est obligé de faire un cas à part
+    Affichage_Cles_Triees_Recursive(a->fils[1]);
+    printf("%i", a->cles[1]);
+    Affichage_Cles_Triees_Recursive(a->fils[2]);
+    return;
+  }
   for(int i = 0; i<a->t; i++){
     Affichage_Cles_Triees_Recursive(a->fils[i]);
     if(i != a->t-1){
@@ -320,16 +365,19 @@ int main (int argc, char **argv)
   } else {
     afficher_arbre(b,0);
   }
-  //Afficher_Cles_Largeur(a);
-/*  int* feuille;
-  int *noeud2;
-  int *noeud3;
-  int *noeud4;
-  AnalyseStructureArbre(a, feuille, noeud2, noeud3, noeud4);
-  //Affichage_Cles_Triees_Recursive(a);
-  printf("%i\n", *feuille);
-  printf("%i\n", *noeud2);
-  printf("%i\n", *noeud3);
-  //printf("%i\n", *noeud4);
-  */
+  printf("\n=== Affichage des Clés triées dans l'ordre croissant ===");
+  Affichage_Cles_Triees_Recursive(a);
+  printf("=== Affichage des Clés en largeur ===\n");
+  Afficher_Cles_Largeur(a);
+  printf("=== Affichage du nombre de noeud2/noeud3/noeud4/feuille ===\n");
+  int feuille = 0;
+  int noeud2 = 0;
+  int noeud3 = 0;
+  int noeud4 = 0;
+  AnalyseStructureArbre(a, &feuille, &noeud2, &noeud3, &noeud4);
+  //Affichage_Cles_Trieesffichage_Cles_Triees_Recursive(a)_Recursive(a);
+  printf("Nombre de feuilles : %i\n", feuille);
+  printf("Nombre de noeud2 : %i\n", noeud2);
+  printf("Nombre de noeud3 : %i\n", noeud3);
+  printf("Nombre de noeud4 : %i\n", noeud4);
 }

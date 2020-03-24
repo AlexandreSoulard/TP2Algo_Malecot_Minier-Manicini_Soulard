@@ -34,5 +34,3 @@ void Afficher_Cles_Largeur (Arbre234 a);
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a);
 
 void Detruire_Cle (Arbre234 *a, int cle);
-
-
