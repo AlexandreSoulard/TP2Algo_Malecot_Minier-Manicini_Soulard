@@ -199,18 +199,66 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
   }
 }
 
+int CalculValeurNoeud(Arbre234 a){
+  int res = 0;
+  if(a->t == 2){
+    res += a->cles[1];
+  }
+  if(a->t == 3){
+    res += a->cles[0];
+    res += a->cles[1];
+  }
+  if(a->t == 4){
+    res += a->cles[0];
+    res += a->cles[1];
+    res += a->cles[2];
+  }
+  return res;
+}
+
 Arbre234 noeud_max (Arbre234 a)
 {
-  int max;
-  for(int i = 0; i<a->t; i++){
-    max += a->cles[i];
+  pfile_t file = creer_file();
+  Arbre234 maximum = a;
+  int max = CalculValeurNoeud(maximum);
+  enfiler(file, a);
+  while (!file_vide(file)) {
+    a = defiler(file);
+    switch (a->t) {
+    case 0:
+      break;
+    case 2:
+      enfiler(file, a->fils[1]);
+      enfiler(file, a->fils[2]);
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    case 3:
+      for (int i = 0; i < 3; i++) {
+        enfiler(file, a->fils[i]);
+      }
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    case 4:
+      for (int i = 0; i < 4; i++) {
+        enfiler(file, a->fils[i]);
+      }
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    default:
+      printf("Error, unknown statement\n");
+      break;
+    }
   }
-  if(a == NULL){
-    return NULL;
-  }
-
-  return NULL;
-
+  return maximum;
 }
 
 
@@ -365,7 +413,10 @@ int main (int argc, char **argv)
     printf("Le noeud 50 n'est pas l'arbre\n");
   } else {
     afficher_arbre(b,0);
-  }
+  } 
+  printf("\n=== Affichage du noeud max ===\n");
+  Arbre234 noeudmax = noeud_max(a);
+  afficher_arbre(noeudmax, 0);
   printf("\n=== Affichage des Clés triées dans l'ordre croissant R===");
   Affichage_Cles_Triees_Recursive(a);
   printf("\n=== Affichage des Clés triées dans l'ordre croissant NR===\n");
