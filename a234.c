@@ -93,6 +93,7 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
+  /*
     if(a == NULL){
         return NULL;
       }
@@ -123,8 +124,8 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
         }
       }
       return NULL;
-
-/*  if(a== NULL || a->t==0){
+*/
+  if(a== NULL || a->t==0){
     return NULL;
   }
 
@@ -187,7 +188,6 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
     if(res2 != NULL){
       return res2;
     }
-*/
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
