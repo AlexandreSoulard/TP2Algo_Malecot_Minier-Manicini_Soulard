@@ -4,6 +4,7 @@
 
 #include "a234.h"
 #include "file.h"
+#include "pile.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
 
@@ -274,124 +275,54 @@ void Affichage_Cles_Triees_Recursive (Arbre234 a)
   }
 }
 
-void inserer_tab_croissant(int* tab, Arbre234 a, int nb){
-  if(a->t == 2){
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[1]){
-        int m = tab[i];
-        tab[i] = a->cles[1];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-  }
-  if(a->t == 3){
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[0]){
-        int m = tab[i];
-        tab[i] = a->cles[1];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[1]){
-        int m = tab[i];
-        tab[i] = a->cles[1];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-  }
-  if(a->t == 4){
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[0]){
-        int m = tab[i];
-        tab[i] = a->cles[0];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[1]){
-        int m = tab[i];
-        tab[i] = a->cles[1];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-    for(int i = 0; i<nb; i++){
-      if(tab[i] > a->cles[2]){
-        int m = tab[i];
-        tab[i] = a->cles[2];
-        for(int j = i+1; j<nb; j++){
-          int l = tab[j];
-          tab[j] = m;
-          m = l;
-        }
-      }
-    }
-  }
-}
-
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 {
-  pfile_t file = creer_file();  //Création d'une pile
-  pfile_t file2 = creer_file();
-  int nb =  NombreCles(a);
-  int* tab = malloc(sizeof(int)*nb);
-  enfiler(file, a);
-  enfiler(file2, a);       //Enfilement de la racine*
-  while (!file_vide(file)) {    //Parcours en largeur classique
-    a = defiler(file);      //Défilement du noeud
-    switch (a->t) {       //Evaluation du type du noeud
-    case 0:
-      break;
-    case 2:
-      enfiler(file, a->fils[1]);
-      enfiler(file2, a->fils[1]);
-      enfiler(file, a->fils[2]);
-      enfiler(file2, a->fils[2]);
-      break;
-    case 3:
-      for (int i = 0; i < 3; i++) {
-        enfiler(file, a->fils[i]);
-        enfiler(file2, a->fils[i]);
-      }
-      break;
-    case 4:
-      for (int i = 0; i < 4; i++) {
-        enfiler(file, a->fils[i]);
-        enfiler(file2, a->fils[i]);
-      }
-      break;
-    default:
-      printf("Error, unknown statement\n");
-      break;
-    }
-  }
-  while(!file_vide(file2)){
-    a = defiler(file2);
-    inserer_tab_croissant(tab, a, nb);
-  }
-  for(int i = 0; i<nb; i++){
-    printf("%i\n", tab[i]);
-  }
+	int currNoeud;
+	if (a == NULL) return;
+	if (a->fils[1] == NULL && a->t == 0) {
+		return;
+	}
+	ppile_t p = creer_pile();
+	if (a->t == 2) currNoeud = 1;
+	else currNoeud = 0;
+	empiler(p, a, currNoeud);
+	while(1) {
+		while (a != NULL && a->t != 0) {
+			if (a->t == 2) currNoeud = 1;
+			else currNoeud = 0;
+			empiler(p, a, currNoeud);
+			if (a->t == 2) a = a->fils[1];
+			else if (a->t == 3 || a->t == 4) a = a->fils[0];
+		}
+		a = depiler(p, &currNoeud);
+		if (a->t == 2) {
+			if (currNoeud < a->t) printf("%i\n", a->cles[currNoeud]);
+		}
+		else  {
+			if (currNoeud < a->t-1) printf("%i\n", a->cles[currNoeud]);
+		} 
+		
+		if (currNoeud < a->t) {
+			currNoeud++;
+			empiler(p, a, currNoeud);
+		}
+		else {
+			do {
+				a = depiler(p, &currNoeud);
+				if (pile_vide(p) == 1) return;
+				if (a->t > 2) {
+					if (currNoeud < a->t-1) printf("%i\n", a->cles[currNoeud]);
+				}
+				else {
+					if (currNoeud < a->t) printf("%i\n", a->cles[currNoeud]);
+				}
+			}
+			while (currNoeud >= a->t);
+			currNoeud++;
+			empiler(p, a, currNoeud);
+		}
+		a = a->fils[currNoeud];
+	}
 }
 
 
@@ -435,9 +366,9 @@ int main (int argc, char **argv)
   } else {
     afficher_arbre(b,0);
   }
-  printf("\n=== Affichage des Clés triées dans l'ordre croissant en récursif ===");
+  printf("\n=== Affichage des Clés triées dans l'ordre croissant R===");
   Affichage_Cles_Triees_Recursive(a);
-  printf("\n=== Affichage des Clés triées dans l'ordre croissant en non récursif ===\n");
+  printf("\n=== Affichage des Clés triées dans l'ordre croissant NR===\n");
   Affichage_Cles_Triees_NonRecursive(a);
   printf("=== Affichage des Clés en largeur ===\n");
   Afficher_Cles_Largeur(a);
