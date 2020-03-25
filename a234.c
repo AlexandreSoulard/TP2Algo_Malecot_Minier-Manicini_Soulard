@@ -94,8 +94,7 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-  /*
-    if(a == NULL){
+/*    if(a == NULL){
         return NULL;
       }
       if(a->t == 0){
@@ -189,6 +188,7 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
     if(res2 != NULL){
       return res2;
     }
+  }
 }
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
@@ -339,8 +339,8 @@ void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 		}
 		else  {
 			if (currNoeud < a->t-1) printf("%i\n", a->cles[currNoeud]);
-		} 
-		
+		}
+
 		if (currNoeud < a->t) {
 			currNoeud++;
 			empiler(p, a, currNoeud);
