@@ -4,6 +4,7 @@
 
 #include "a234.h"
 #include "file.h"
+#include "pile.h"
 
 #define max(a,b) ((a)>(b)?(a):(b))
 
@@ -259,7 +260,6 @@ void Afficher_Cles_Largeur (Arbre234 a)
 	enfiler(file, a);				//Enfilement de la racine*
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement du noeud
-		int nbrFils;
 		switch (a->t) {				//Evaluation du type du noeud
 		case 0:
 			break;
@@ -316,12 +316,52 @@ void Affichage_Cles_Triees_Recursive (Arbre234 a)
 
 void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 {
-    /*
-     Afficher les cles en ordre croissant
-     Cette fonction ne sera pas recursive
-     Utiliser une pile
-  */
-
+	int currNoeud;
+	if (a == NULL) return;
+	if (a->fils[1] == NULL && a->t == 0) {
+		return;
+	}
+	ppile_t p = creer_pile();
+	if (a->t == 2) currNoeud = 1;
+	else currNoeud = 0;
+	empiler(p, a, currNoeud);
+	while(1) {
+		while (a != NULL && a->t != 0) {
+			if (a->t == 2) currNoeud = 1;
+			else currNoeud = 0;
+			empiler(p, a, currNoeud);
+			if (a->t == 2) a = a->fils[1];
+			else if (a->t == 3 || a->t == 4) a = a->fils[0];
+		}
+		a = depiler(p, &currNoeud);
+		if (a->t == 2) {
+			if (currNoeud < a->t) printf("%i\n", a->cles[currNoeud]);
+		}
+		else  {
+			if (currNoeud < a->t-1) printf("%i\n", a->cles[currNoeud]);
+		} 
+		
+		if (currNoeud < a->t) {
+			currNoeud++;
+			empiler(p, a, currNoeud);
+		}
+		else {
+			do {
+				a = depiler(p, &currNoeud);
+				if (pile_vide(p) == 1) return;
+				if (a->t > 2) {
+					if (currNoeud < a->t-1) printf("%i\n", a->cles[currNoeud]);
+				}
+				else {
+					if (currNoeud < a->t) printf("%i\n", a->cles[currNoeud]);
+				}
+			}
+			while (currNoeud >= a->t);
+			currNoeud++;
+			empiler(p, a, currNoeud);
+		}
+		a = a->fils[currNoeud];
+	}
 }
 
 
@@ -365,8 +405,10 @@ int main (int argc, char **argv)
   } else {
     afficher_arbre(b,0);
   }
-  printf("\n=== Affichage des Clés triées dans l'ordre croissant ===");
+  printf("\n=== Affichage des Clés triées dans l'ordre croissant R===");
   Affichage_Cles_Triees_Recursive(a);
+  printf("\n=== Affichage des Clés triées dans l'ordre croissant NR===\n");
+  Affichage_Cles_Triees_NonRecursive(a);
   printf("=== Affichage des Clés en largeur ===\n");
   Afficher_Cles_Largeur(a);
   printf("=== Affichage du nombre de noeud2/noeud3/noeud4/feuille ===\n");
