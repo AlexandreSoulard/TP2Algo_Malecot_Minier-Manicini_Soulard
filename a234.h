@@ -19,6 +19,14 @@ Arbre234 lire_arbre (char *nom_fichier) ;
 
 void afficher_arbre (Arbre234 a, int niveau) ;
 
+int hauteur (Arbre234 a);
+
+int NombreCles (Arbre234 a);
+
+int CleMax (Arbre234 a);
+
+int CleMin (Arbre234 a);
+
 void ajouter_cle (Arbre234 *a, int cle, int niveau, Arbre234 pere) ;
 
 Arbre234 RechercherCle (Arbre234 a, int cle);
