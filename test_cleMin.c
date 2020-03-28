@@ -18,7 +18,7 @@ int main (int argc, char** argv) {
 		str = strcat(str, tail); 
 		a = lire_arbre (str);
 		min = CleMin(a);
-		printf("La clé min est: %i   ", min);
+		printf("Arbre %i, La clé min est: %i   ", i, min);
 		printf("Valeur attendue: %i ---> ", expected[i-1]);
 		if (min == expected[i-1]) printf("CORRECT\n");
 		else {
@@ -28,7 +28,7 @@ int main (int argc, char** argv) {
 	}
 	a = lire_arbre ("data/arbrecours");
 	min = CleMin(a);
-	printf("La clé min est: %i   ", min);
+	printf("Arbre cours, La clé min est: %i   ", min);
 	printf("Valeur attendue: %i ---> ", 1);
 	if (min == 1) printf("CORRECT\n");
 	else printf("ERROR, stop\n");

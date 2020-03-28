@@ -18,7 +18,7 @@ int main (int argc, char** argv) {
 		str = strcat(str, tail); 
 		a = lire_arbre (str);
 		nb = NombreCles(a);
-		printf("Le nombre de clés est de: %i   ", nb);
+		printf("Arbre %i, Le nombre de clés est de: %i   ", i, nb);
 		printf("Valeur attendue: %i ---> ", expected[i-1]);
 		if (nb == expected[i-1]) printf("CORRECT\n");
 		else {
@@ -28,7 +28,7 @@ int main (int argc, char** argv) {
 	}
 	a = lire_arbre ("data/arbrecours");
 	nb = NombreCles(a);
-	printf("Le nombre de clés est de: %i   ", nb);
+	printf("Arbre cours, Le nombre de clés est de: %i   ", nb);
 	printf("Valeur attendue: %i ---> ", 17);
 	if (nb == 17) printf("CORRECT\n");
 	else printf("ERROR, stop\n");

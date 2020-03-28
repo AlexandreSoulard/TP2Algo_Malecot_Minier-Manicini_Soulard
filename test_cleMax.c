@@ -18,7 +18,7 @@ int main (int argc, char** argv) {
 		str = strcat(str, tail); 
 		a = lire_arbre (str);
 		max = CleMax(a);
-		printf("La clé max est: %i   ", max);
+		printf("Arbre %i, La clé max est: %i   ", i, max);
 		printf("Valeur attendue: %i ---> ", expected[i-1]);
 		if (max == expected[i-1]) printf("CORRECT\n");
 		else {
@@ -28,7 +28,7 @@ int main (int argc, char** argv) {
 	}
 	a = lire_arbre ("data/arbrecours");
 	max = CleMax(a);
-	printf("La clé max est: %i   ", max);
+	printf("Arbre cours, La clé max est: %i   ", max);
 	printf("Valeur attendue: %i ---> ", 50);
 	if (max == 50) printf("CORRECT\n");
 	else printf("ERROR, stop\n");
