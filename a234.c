@@ -94,37 +94,6 @@ int CleMin (Arbre234 a)
 
 Arbre234 RechercherCle (Arbre234 a, int cle)
 {
-/*    if(a == NULL){
-        return NULL;
-      }
-      if(a->t == 0){
-        return NULL;
-      }
-      if(a->t == 2){
-        if(a->cles[1] == cle){
-          return a;
-        }
-        Arbre234 res = RechercherCle(a->fils[1], cle);
-        Arbre234 res2 = RechercherCle(a->fils[2], cle);
-        if(res != NULL){
-          return res;
-        }
-        if(res2 != NULL){
-          return res2;
-        }
-      }
-      else{
-        for(int i =0; i<a->t; i++){
-          if(a->cles[i] == cle){
-            return a;
-          }
-        }
-        for(int i = 0; i<a->t; i++){
-          return RechercherCle(a->fils[i], cle);
-        }
-      }
-      return NULL;
-*/
   if(a== NULL || a->t==0){
     return NULL;
   }
@@ -180,14 +149,6 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
         return res1;
       }
     }
-    Arbre234 res = RechercherCle(a->fils[1], cle);
-    Arbre234 res2 = RechercherCle(a->fils[2], cle);
-    if(res != NULL){
-      return res;
-    }
-    if(res2 != NULL){
-      return res2;
-    }
   }
 }
 
@@ -238,18 +199,66 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
   }
 }
 
+int CalculValeurNoeud(Arbre234 a){
+  int res = 0;
+  if(a->t == 2){
+    res += a->cles[1];
+  }
+  if(a->t == 3){
+    res += a->cles[0];
+    res += a->cles[1];
+  }
+  if(a->t == 4){
+    res += a->cles[0];
+    res += a->cles[1];
+    res += a->cles[2];
+  }
+  return res;
+}
+
 Arbre234 noeud_max (Arbre234 a)
 {
-  int max;
-  for(int i = 0; i<a->t; i++){
-    max += a->cles[i];
+  pfile_t file = creer_file();
+  Arbre234 maximum = a;
+  int max = CalculValeurNoeud(maximum);
+  enfiler(file, a);
+  while (!file_vide(file)) {
+    a = defiler(file);
+    switch (a->t) {
+    case 0:
+      break;
+    case 2:
+      enfiler(file, a->fils[1]);
+      enfiler(file, a->fils[2]);
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    case 3:
+      for (int i = 0; i < 3; i++) {
+        enfiler(file, a->fils[i]);
+      }
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    case 4:
+      for (int i = 0; i < 4; i++) {
+        enfiler(file, a->fils[i]);
+      }
+      if(CalculValeurNoeud(a) > max){
+        maximum = a;
+        max = CalculValeurNoeud(maximum);
+      }
+      break;
+    default:
+      printf("Error, unknown statement\n");
+      break;
+    }
   }
-  if(a == NULL){
-    return NULL;
-  }
-
-  return NULL;
-
+  return maximum;
 }
 
 
@@ -405,6 +414,9 @@ int main (int argc, char **argv)
   } else {
     afficher_arbre(b,0);
   }
+  printf("\n=== Affichage du noeud max ===\n");
+  Arbre234 noeudmax = noeud_max(a);
+  afficher_arbre(noeudmax, 0);
   printf("\n=== Affichage des Clés triées dans l'ordre croissant R===");
   Affichage_Cles_Triees_Recursive(a);
   printf("\n=== Affichage des Clés triées dans l'ordre croissant NR===\n");
@@ -417,7 +429,6 @@ int main (int argc, char **argv)
   int noeud3 = 0;
   int noeud4 = 0;
   AnalyseStructureArbre(a, &feuille, &noeud2, &noeud3, &noeud4);
-  //Affichage_Cles_Trieesffichage_Cles_Triees_Recursive(a)_Recursive(a);
   printf("Nombre de feuilles : %i\n", feuille);
   printf("Nombre de noeud2 : %i\n", noeud2);
   printf("Nombre de noeud3 : %i\n", noeud3);
