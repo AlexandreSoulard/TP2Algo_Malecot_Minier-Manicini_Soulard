@@ -328,9 +328,12 @@ Arbre234 Fusion (Arbre234 arbre){
  }
  */
 }
+
+
 void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
   Arbre234 arbre = *a;
-  
+
+//### Cas où l'arbre ne possède qu'une clé et que c'est celle que l'on désire détruire
 
 //### Cas où l'on se place dand un Noeud2 ###
 
@@ -338,21 +341,23 @@ void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
     if (arbre->cles[1]==cle){
       int indice =-1;
       int* pindice = &indice;
+
       RechercheCleArbrePere(cle, arbre_principal, pindice);   //Il faut regarder le parent pour savoir comment modifier l'arbre
       Arbre234 pere = *arbre_principal;
-      //afficher_arbre(pere,0);                       //verification du fonctionnement de RechercheCleArbrePere
-      /*
-      if(pere->fils[*pindice]!=NULL){
-        afficher_arbre(pere->fils[*pindice],0);
+
+//### Cas où l'on a un seul noeud sans pere ni fils ###
+
+      if ((arbre->fils[1]==NULL || arbre->fils[1]->t==0) && (arbre->fils[2]==NULL || arbre->fils[2]->t==0)) {
+        if (*pindice == -1){
+          arbre->t=0;
+          return;
+        }
+
       }
-      */
 
 //### Cas dependant du nombre de fils du parent ###
 
-      if (pere==NULL && *pindice==-1 && (arbre->fils[0]==NULL || arbre->fils[0]->t==0) && (arbre->fils[1]==NULL || arbre->fils[1]->t==0)){
-        arbre = NULL;
-        return;                                 //l'arbre ne contient qu'un seul noeud celui à supprimer
-      } else if (pere==NULL && *pindice==-1){
+      if (pere==NULL && *pindice==-1){
         printf("Error : Pas de parent au noeud que vous souhaitez supprimer\n");
         return;
 
@@ -423,17 +428,14 @@ void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
             detruire_cle(arbre_principal, cle);
           }
         }
-<<<<<<< HEAD
 
 //### Cas où le père possède 3 fils
 
       } else if(pere->t==3){
         if (*pindice==3){
           printf("Indice du fils invalide\n");
-=======
         if (pere->t==2 && pere->fils[1]->t == 2 && pere->fils[2]->t == 2){
           printf("Le noeud2 pere et ces fils auraient du être fusionné lors de la destruciton précédente\n");
->>>>>>> f7eb1d269967f48694c25dd0ca496394f95b8f9f
           return;
 
 //### Cas où la clé cherché se trouve dans le fils numéro 2
@@ -614,6 +616,7 @@ void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
     detruire_cle_aux(&d,arbre_principal,cle);
     detruire_cle_aux(&e, arbre_principal,cle);
   }
+}
 }
 
 
