@@ -21,6 +21,9 @@ lire_affichage.o: lire_affichage.c a234.h
 ajout_cle.o : ajout_cle.c a234.h
 	gcc $(OPTIONS_COMPIL) ajout_cle.c
 
+detruire_cle.o: detruire_cle.c a234.h detruire_cle.h
+	gcc $(OPTIONS_COMPIL) detruire_cle.c
+
 ####
 test_overview_file: test_overview_file.o a234.o lire_affichage.o ajout_cle.o file.o pile.o
 	gcc -o test_overview_file test_overview_file.o a234.o lire_affichage.o ajout_cle.o file.o pile.o
@@ -92,10 +95,10 @@ test_affichageClesTrieesNonRecursive.o: test_affichageClesTrieesNonRecursive.c a
 	gcc $(OPTIONS_COMPIL) test_affichageClesTrieesNonRecursive.c
 
 ####
-test_detruireCle: test_detruireCle.o a234.o lire_affichage.o ajout_cle.o file.o pile.o
-	gcc -o test_detruireCle test_detruireCle.o a234.o lire_affichage.o ajout_cle.o file.o pile.o
+test_detruireCle: test_detruireCle.o a234.o lire_affichage.o ajout_cle.o file.o pile.o detruire_cle.o
+	gcc -o test_detruireCle test_detruireCle.o a234.o lire_affichage.o ajout_cle.o file.o pile.o detruire_cle.o
 
-test_detruireCle.o: test_detruireCle.c a234.h
+test_detruireCle.o: test_detruireCle.c a234.h detruire_cle.h
 	gcc $(OPTIONS_COMPIL) test_detruireCle.c
 
 clean:
