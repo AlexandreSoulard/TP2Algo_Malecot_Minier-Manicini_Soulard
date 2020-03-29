@@ -16,13 +16,7 @@ int main (int argc, char** argv) {
   a = lire_arbre (argv [1]);
   afficher_arbre(a,0);
   Arbre234* c = &a;
-  int i = -1;
-  int* branche = &i;
-  Arbre234 b = RechercheCleArbrePere(250, c, branche);
-  afficher_arbre(b,0);
-  afficher_arbre(*c,0);
-  printf("%i\n", *branche);
-  detruire_cle(c,370);
+  detruire_cle(c,50);
   afficher_arbre(*c,0);
 
 
