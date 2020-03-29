@@ -269,7 +269,7 @@ void Afficher_Cles_Largeur (Arbre234 a)
 	enfiler(file, a);				//Enfilement de la racine*
 	while (!file_vide(file)) {		//Parcours en largeur classique
 		a = defiler(file);			//Défilement/récupération du noeud
-		
+
 		switch (a->t) {						//Evaluation du type du noeud
 		case 0:								//Arbre de type 0, il n'y a rien à afficher
 			break;
@@ -278,7 +278,7 @@ void Afficher_Cles_Largeur (Arbre234 a)
 			enfiler(file, a->fils[2]);		//On enfile le deuxième fils
 			printf("%i\n", a->cles[1]);		//On affiche l'unique clé
 			break;
-		case 3:								//Arbre de type 3		
+		case 3:								//Arbre de type 3
 			for (int i = 0; i < 3; i++) {  	//On enfile les 3 fils
 				enfiler(file, a->fils[i]);
 			}
@@ -333,8 +333,8 @@ void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 	}
 	ppile_t p = creer_pile();				//Création de notre pile avec noeud courant ajouté
 	if (a->t == 2) currNoeud = 1;			//Voir les spécifications de a234 et de l'emplacement de ses clés/fils dans le tableau en fonction de son type
-	else currNoeud = 0;						
-	
+	else currNoeud = 0;
+
 	empiler(p, a, currNoeud);				//Empilement de la racine
 	while(1) {								//Boucle infinie, on sortira dans le programme quand on aura trouvé une condition d'arrêt
 		while (a != NULL && a->t != 0) {	//Etape de plongée, on parcours en profondeur jusqu'à atteindre un noeud fils de feuille (hors arbre)
@@ -344,11 +344,11 @@ void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 			if (a->t == 2) a = a->fils[1];						//Passag au fils, toujours en fonction du type
 			else if (a->t == 3 || a->t == 4) a = a->fils[0];
 		}
-		
+
 		a = depiler(p, &currNoeud);			//On dépile et donc on récupère un noeud feuille
 		if (a->t == 2) { if (currNoeud < a->t) printf("%i ", a->cles[currNoeud]); }	//Affichage de la clé, toujours en fonction du type
 		else { if (currNoeud < a->t-1) printf("%i ", a->cles[currNoeud]); }
-		
+
 		if (currNoeud < a->t) {				//Cas où l'on n'a pas encore traité tous les fils//Et si la pile est vide la fonction est terminée (à savoir que la racine est empilée deux fois au cours de la fonction et que cette dernière valeur dans la pile est aussi la racine mais comme elle a déjà été traitée la fonction peut se terminer)
 			currNoeud++;					//Le noeud courant se décale
 			empiler(p, a, currNoeud);		//Et on empile le même noeud mais avec son noeud courant incrémenté
@@ -358,7 +358,7 @@ void Affichage_Cles_Triees_NonRecursive (Arbre234 a)
 				a = depiler(p, &currNoeud);			//On dépile pour remonter au noeud parent
 				if (pile_vide(p) == 1) {			//Et si la pile est vide la fonction est terminée (à savoir que la racine est empilée deux fois au cours de la fonction et que cette dernière valeur dans la pile est aussi la racine mais comme elle a déjà été traitée la fonction peut se terminer)
 					printf("\n");
-					return;		
+					return;
 				}
 				if (a->t == 2) { if (currNoeud < a->t) printf("%i ", a->cles[currNoeud]); } 	//Affichage, toujour en fonction du type
 				else { if (currNoeud < a->t-1) printf("%i ", a->cles[currNoeud]); }

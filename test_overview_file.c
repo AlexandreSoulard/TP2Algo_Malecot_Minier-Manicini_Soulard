@@ -27,12 +27,12 @@ int main (int argc, char **argv)
   int cle_min = CleMin(a);
   printf("La clé min est :%i\n", cle_min);
   Arbre234 b = RechercherCle(a,50);
-  printf("=== Afficher sous-arbre dont la racine est la clé cherché ===\n");
+  printf("=== Afficher sous-arbre dont la racine est la clé cherché : 50 ===\n");
   if (b == NULL){
     printf("Le noeud 50 n'est pas l'arbre\n");
   } else {
     afficher_arbre(b,0);
-  } 
+  }
   printf("\n=== Affichage du noeud max ===\n");
   Arbre234 noeudmax = noeud_max(a);
   afficher_arbre(noeudmax, 0);
