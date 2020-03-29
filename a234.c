@@ -29,10 +29,22 @@ int hauteur (Arbre234 a)
 
 int NombreCles (Arbre234 a)
 {
-  if(a == NULL || a->t == 0 ){
+  if(a == NULL){
     return 0;
   }
-  return a->t-1 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]) + NombreCles(a->fils[4]);
+  if(a->t == 0){
+    return 0;
+  }
+  if(a->t == 2){
+    return 1 + NombreCles(a->fils[1]) + NombreCles(a->fils[2]);
+  }
+  if(a->t == 3){
+    return 2 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]);
+  }
+  if(a->t == 4){
+    return 3 + NombreCles(a->fils[0]) + NombreCles(a->fils[1])+ NombreCles(a->fils[2]) + NombreCles(a->fils[3]);
+  }
+  return 0;
 }
 
 int CleMax (Arbre234 a)
@@ -152,8 +164,7 @@ Arbre234 RechercherCle (Arbre234 a, int cle)
   }
 }
 
-void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
-{
+void AnalyseStructureArbrerec(Arbre234 a, int* feuilles, int* noeud2, int* noeud3, int* noeud4){
   if(a == NULL){
     return;
   }
@@ -189,14 +200,23 @@ void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3,
     *feuilles = *feuilles + 1;
   }
   if(a->t == 2){
-    AnalyseStructureArbre(a->fils[1], feuilles, noeud2, noeud3, noeud4);
-    AnalyseStructureArbre(a->fils[2], feuilles, noeud2, noeud3, noeud4);
+    AnalyseStructureArbrerec(a->fils[1], feuilles, noeud2, noeud3, noeud4);
+    AnalyseStructureArbrerec(a->fils[2], feuilles, noeud2, noeud3, noeud4);
   }
   else{
     for(int i = 0; i<a->t;i++){
-      AnalyseStructureArbre(a->fils[i], feuilles, noeud2, noeud3, noeud4);
+      AnalyseStructureArbrerec(a->fils[i], feuilles, noeud2, noeud3, noeud4);
     }
   }
+}
+
+void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
+{
+  *feuilles = 0;
+  *noeud2 = 0;
+  *noeud3 = 0;
+  *noeud4 = 0;
+  AnalyseStructureArbrerec(a, feuilles, noeud2, noeud3, noeud4);
 }
 
 int CalculValeurNoeud(Arbre234 a){
