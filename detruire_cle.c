@@ -330,7 +330,7 @@ Arbre234 Fusion (Arbre234 arbre){
 }
 void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
   Arbre234 arbre = *a;
-
+  
 
 //### Cas où l'on se place dand un Noeud2 ###
 
@@ -363,6 +363,7 @@ void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
           printf("Error :Le noeud2 pere et ces fils auraient du être fusionné lors de la destruciton précédente\n");
           Fusion(pere);
           printf("Correction de l'erreur :OK\n");
+
           return;
 
 //### Cas où le noeud qui possède la clé à supprimer est le 2eme fils du parent (on différencie les cas en fonction du nombre de clé dans l'autre fils)
@@ -422,12 +423,17 @@ void detruire_cle_aux(Arbre234 *a, Arbre234* arbre_principal, int cle){
             detruire_cle(arbre_principal, cle);
           }
         }
+<<<<<<< HEAD
 
 //### Cas où le père possède 3 fils
 
       } else if(pere->t==3){
         if (*pindice==3){
           printf("Indice du fils invalide\n");
+=======
+        if (pere->t==2 && pere->fils[1]->t == 2 && pere->fils[2]->t == 2){
+          printf("Le noeud2 pere et ces fils auraient du être fusionné lors de la destruciton précédente\n");
+>>>>>>> f7eb1d269967f48694c25dd0ca496394f95b8f9f
           return;
 
 //### Cas où la clé cherché se trouve dans le fils numéro 2

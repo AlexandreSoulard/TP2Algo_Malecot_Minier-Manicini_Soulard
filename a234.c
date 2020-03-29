@@ -35,13 +35,13 @@ int NombreCles (Arbre234 a)
   if(a->t == 0){
     return 0;
   }
-  if(a->t == 2){
+  if(a->t == 2){// On fait de manière récursive, si a->t = 2 alors on rappelle la fonction sur ses deux fils
     return 1 + NombreCles(a->fils[1]) + NombreCles(a->fils[2]);
   }
-  if(a->t == 3){
+  if(a->t == 3){// Si a->t = 3 on rappelle la fonction sur ses 3 fils
     return 2 + NombreCles(a->fils[0]) + NombreCles(a->fils[1]) + NombreCles(a->fils[2]);
   }
-  if(a->t == 4){
+  if(a->t == 4){// Pour finir, Si a->t = 4 on rappelle la fonction sur ses 4 fils
     return 3 + NombreCles(a->fils[0]) + NombreCles(a->fils[1])+ NombreCles(a->fils[2]) + NombreCles(a->fils[3]);
   }
   return 0;
@@ -181,7 +181,7 @@ void AnalyseStructureArbrerec(Arbre234 a, int* feuilles, int* noeud2, int* noeud
     *noeud4 = *noeud4 + 1;
   }
   int nbfils = 0;
-  if(a->t == 2){
+  if(a->t == 2){ //On regarde si le noeud ou l'on est à des fils
     if(a->fils[1]->t != 0){
       nbfils++;
     }
@@ -189,17 +189,17 @@ void AnalyseStructureArbrerec(Arbre234 a, int* feuilles, int* noeud2, int* noeud
       nbfils++;
     }
   }
-  else{
+  else{//Si a->t != 2 alors on fait une boucle while car les fils sont remplis dans l'ordre (0 puis 1 puis 2...)
     for(int i = 0; i<a->t-1; i++){
       if(a->fils[i]->t != 0){
         nbfils++;
       }
     }
   }
-  if(nbfils == 0){
+  if(nbfils == 0){ // si le noeud actuel n'a pas de fils, on a une feuille donc on incrémente feuilles de 1
     *feuilles = *feuilles + 1;
   }
-  if(a->t == 2){
+  if(a->t == 2){ //On rappelle la fonction sur les fils du noeud actuel, pour un noeud2 on appelle sur a->fils[1] et a->fils[2]
     AnalyseStructureArbrerec(a->fils[1], feuilles, noeud2, noeud3, noeud4);
     AnalyseStructureArbrerec(a->fils[2], feuilles, noeud2, noeud3, noeud4);
   }
@@ -212,7 +212,7 @@ void AnalyseStructureArbrerec(Arbre234 a, int* feuilles, int* noeud2, int* noeud
 
 void AnalyseStructureArbre (Arbre234 a, int *feuilles, int *noeud2, int *noeud3, int *noeud4)
 {
-  *feuilles = 0;
+  *feuilles = 0; //On initialise les valeurs à 0 pour être sur que le résultat ne soit pas affecté par le début du programme qui aurait pu mettre d'autres valeurs initiales dans les pointeurs
   *noeud2 = 0;
   *noeud3 = 0;
   *noeud4 = 0;
@@ -242,21 +242,21 @@ Arbre234 noeud_max (Arbre234 a)
   Arbre234 maximum = a;
   int max = CalculValeurNoeud(maximum);
   enfiler(file, a);
-  while (!file_vide(file)) {
+  while (!file_vide(file)) {//On utilise le principe de la file implémenté dans le TP précédent
     a = defiler(file);
     switch (a->t) {
     case 0:
       break;
     case 2:
       enfiler(file, a->fils[1]);
-      enfiler(file, a->fils[2]);
-      if(CalculValeurNoeud(a) > max){
-        maximum = a;
+      enfiler(file, a->fils[2]);//On met dans la file les deux fils du noeud actuel
+      if(CalculValeurNoeud(a) > max){//On calcule la somme des clés du noeud et on compare au maximum trouvé pour l'instant
+        maximum = a;//Si c'est supérieur alors on dit que le noeud maximum est égal au noeud actuel
         max = CalculValeurNoeud(maximum);
       }
       break;
-    case 3:
-      for (int i = 0; i < 3; i++) {
+    case 3://On fait la même chose pour un noeud 3
+      for (int i = 0; i < 3; i++) {//On enfile ses fils puis on calcule la valeur du noeud
         enfiler(file, a->fils[i]);
       }
       if(CalculValeurNoeud(a) > max){
@@ -264,7 +264,7 @@ Arbre234 noeud_max (Arbre234 a)
         max = CalculValeurNoeud(maximum);
       }
       break;
-    case 4:
+    case 4://De même pour un noeud 4
       for (int i = 0; i < 4; i++) {
         enfiler(file, a->fils[i]);
       }
