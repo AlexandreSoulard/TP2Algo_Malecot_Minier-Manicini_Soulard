@@ -314,14 +314,15 @@ void detruire_cle (Arbre234 *a, int cle){
       if (arbre->cles[1]==cle){
         int indice =-1;
         int* pindice = &indice;
-        Arbre234 pere = RechercheCleArbrePere(cle, a, pindice);
+        RechercheCleArbrePere(cle, a, pindice);
+        Arbre234 pere = *a;
         if (pere==NULL && *pindice==-1 && (arbre->fils[0]==NULL || arbre->fils[0]->t==0) && (arbre->fils[1]==NULL || arbre->fils[1]->t==0)){
           arbre = NULL;
         } else if (pere==NULL && *pindice==-1){
           printf("Error : Pas de parent au noeud que vous souhaitez supprimer\n");
           return;
         }
-        if (pere->t==2){
+        if (pere->t==2 && pere->fils[1]->t == 2 && pere->fils[2]->t == 2){
           printf("Le noeud2 pere et ces fils auraient du être fusionné lors de la destruciton précédente\n");
           return;
         } else if(pere->t==3){

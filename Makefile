@@ -1,7 +1,7 @@
-all: test_overview_file
-
 OPTIONS_COMPIL=-Wall -g -c
+executables = test_overview_file test_nombreCles test_cleMax test_cleMin test_rechercherCle test_analyseStructureArbre test_noeudMax test_afficherClesLargeur test_affichageClesTrieesRecursive test_affichageClesTrieesNonRecursive test_detruireCle
 
+all: $(executables)
 
 #a234: a234.o lire_affichage.o ajout_cle.o file.o pile.o
 	#gcc -o a234 a234.o lire_affichage.o ajout_cle.o file.o pile.o
@@ -102,4 +102,5 @@ test_detruireCle.o: test_detruireCle.c a234.h detruire_cle.h
 	gcc $(OPTIONS_COMPIL) test_detruireCle.c
 
 clean:
-	rm -rf a234 *.o *~
+	rm -rf *.o *~
+	rm -rf $(executables)
